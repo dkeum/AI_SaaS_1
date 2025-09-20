@@ -2,19 +2,8 @@ import { Eraser, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 
 const RemoveBackground = () => {
-  const blogCategories = [
-    "General, Technology",
-    "Business",
-    "Health",
-    "Lifestyle",
-    "Education",
-    "Travel",
-    "Food",
-  ];
 
-  const [selectedCategory, setSelectedCategory] = useState(blogCategories[0]);
   const [input, setInput] = useState("");
-
   const onSubmitHandler = async (e) => {
     e.preventDefault();
   };
@@ -32,7 +21,7 @@ const RemoveBackground = () => {
 
         <p className="mt-5 text-sm font-medum">Upload Image</p>
         <input
-          onChange={(e) => setInput(e.target.files)}
+          onChange={(e) => setInput(e.target.files[0])}
           type="file"
           accept="image/*"
           className="w-full p-2 px-3 mt-2 outline-none text-sm rounded-mdborder border-gray-300 text-gray-600"
@@ -49,8 +38,8 @@ const RemoveBackground = () => {
         </button>
       </form>
       {/* right Col*/}
-      <div className="w-full max-w-lg p-4 bg-white ronded-lg rounded-lg flex flex-col border border-gray-200 min-g-96 ">
-       
+      <div className="w-full max-w-lg p-4 bg-white ronded-lg rounded-lg flex flex-col border border-gray-200 min-h-96 ">
+      
         <div className="flex items-center gap-3">
           <Eraser className="w-5 h-5 text-[#FF4938]" />
           <h1 className="text-xl font-semibold">Processed Image</h1>

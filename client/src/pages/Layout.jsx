@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import { MenuIcon, X } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 import { SignIn, useUser } from "@clerk/clerk-react";
-import Dashboard from "./Dashboard";
+
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Layout = () => {
         <img
           src={assets.logo}
           alt=""
-          className="cursor-pointer w-32 sm:w-44"
+          className="cursor-pointer w-32 sm:w-"
           onClick={() => {
             navigate("");
           }}
@@ -40,18 +40,13 @@ const Layout = () => {
           />
         )}
       </nav>
-      
 
       <div className="flex-1 w-full flex h-[calc(100vh-64px)]">
         <Sidebar sidebar={sidebar} setSideBar={setSideBar} />
         <div className="flex-1 bg-[#F4F7FB]">
-        
           <Outlet />
         </div>
-        <Dashboard/>
       </div>
-
-  
     </div>
   ) : (
     <div className="flex items-center justify-center h-screen">
