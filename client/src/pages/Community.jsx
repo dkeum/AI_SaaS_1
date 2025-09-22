@@ -1,22 +1,86 @@
 import { useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
-import {dummyPublishedCreationData} from '../assets/assets'
+import { dummyPublishedCreationData } from "../assets/assets";
 import { Heart } from "lucide-react";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const Community = () => {
   const [creations, setCreations] = useState([]);
   const { user } = useUser();
 
+  const [loading, setloading] = useState(false);
+  const [content, setContent] = useState("");
+  const { getToken } = useAuth();
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      setloading(true);
+      const prompt = `Generate a blog title for the keyword ${input} in th category ${selectedCategory}`;
+
+      const { data } = await axios.post(
+        "/api/ai/generate-blog-title",
+        { prompt },
+        {
+          headers: { Authorization: `Bearer ${await getToken()}` },
+        }
+      );
+
+      if (data.success) {
+        setContent(data.content);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    }
+    setloading(false);
+  };
+
   const fetchCreations = async () => {
-    setCreations(dummyPublishedCreationData);
+    try {
+      const { data } = await axios.post("/api/user/get-published-creations", {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+
+      if (data.success) {
+        setContent(data.content);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
+  const imageLikeToggle = async (id) => {
+    try {
+      const { data } = await axios.post(
+        "/api/user/toggle-like-creation",
+        { id },
+        { prompt },
+        {
+          headers: { Authorization: `Bearer ${await getToken()}` },
+        }
+      );
+      if (data.success) {
+        setContent(data.content);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
 
   useEffect(() => {
     if (user) {
       fetchCreations();
     }
-  }, []);
-  return (
+  }, [user]);
+
+  return !loading ? (
     <div className="flex-1 h-full flex flex-col gap-4 p-6">
       Creations
       <div className="bg-white h-full w-full rounded-xl overflow-y-scroll">
@@ -36,12 +100,23 @@ const Community = () => {
               </p>
               <div>
                 <p>{creation.likes.length}</p>
-                <Heart className={`min-w-5 h-5 hover:scale-110 cursor-pointer ${creation.likes.includes(user.id) ? 'fill-red-500 text-red-600': 'text-white'} `} />
+                <Heart
+                  onClick={() => imageLikeToggle(creation.id)}
+                  className={`min-w-5 h-5 hover:scale-110 cursor-pointer ${
+                    creation.likes.includes(user.id)
+                      ? "fill-red-500 text-red-600"
+                      : "text-white"
+                  } `}
+                />
               </div>
             </div>
           </div>
         ))}
       </div>
+    </div>
+  ) : (
+    <div className="flex justify-center items-center h-full">
+      <span className="w-10 h-10 my-1 rounded-full border-3 border-primary border-t-transparent animate-spin"></span>
     </div>
   );
 };

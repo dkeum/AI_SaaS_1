@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -13,10 +13,17 @@ import RemoveBackground from "./pages/RemoveBackground";
 import RemoveObject from "./pages/RemoveObject";
 import ReviewResumse from "./pages/ReviewResumse";
 import Community from "./pages/Community";
+import { Toaster } from "react-hot-toast";
+import { useAuth } from "@clerk/clerk-react";
 
 function App() {
+  const { getToken } = useAuth();
+  useEffect(() => {
+    getToken().then((token) => console.log(token));
+  }, []);
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ai" element={<Layout />}>
