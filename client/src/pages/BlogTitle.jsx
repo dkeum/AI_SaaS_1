@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const BlogTitle = () => {
   const blogCategories = [
-    "General, Technology",
+    "General",
+    "Technology",
     "Business",
     "Health",
     "Lifestyle",
@@ -36,7 +38,7 @@ const BlogTitle = () => {
           headers: { Authorization: `Bearer ${await getToken()}` },
         }
       );
-
+ 
       if (data.success) {
         setContent(data.content);
       } else {
@@ -80,7 +82,7 @@ const BlogTitle = () => {
               }`}
               key={index}
             >
-              {item.text}
+              {item}
             </span>
           ))}
         </div>

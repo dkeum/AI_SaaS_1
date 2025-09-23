@@ -1,5 +1,9 @@
 import { FileText, Sparkles } from "lucide-react";
 import React, { useState } from "react";
+import axios from 'axios'
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import Markdown from "react-markdown";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -54,15 +58,7 @@ const ReviewResumse = () => {
         />
 
         <p className="mt-5 text-sm font-medum">Supports PDF removal only</p>
-        <textarea
-          onChange={(e) => setObject(e.target.value)}
-          rows={4}
-          value={object}
-          className="w-full p-2 px-3 mt-2 outline-none text-sm rounded-mdborder border-gray-300"
-          placeholder="e.g., watch or spoon, Only single object name"
-          required
-        />
-
+    
         <button
           disabled={loading}
           className="w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#00DA83] to-[#009BB3] text-white px-4 py-2 mt-6 text-sm rounded-lg curosr-pointer"

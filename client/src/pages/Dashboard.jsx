@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { dummyCreationData } from "../assets/assets";
 import { Gem, Sparkles } from "lucide-react";
-import { Protect } from "@clerk/clerk-react";
+import { Protect, useAuth } from "@clerk/clerk-react";
 import CreationItems from "../components/CreationItems";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -16,16 +18,15 @@ const Dashboard = () => {
     try {
       setloading(true);
 
-      const { data } = await axios.post(
-        "/api/user/get_user-creations",
-        { prompt },
+      const { data } = await axios.get(
+        "/api/user/get-user-creations",
         {
           headers: { Authorization: `Bearer ${await getToken()}` },
         }
       );
 
       if (data.success) {
-        setContent(data.content);
+        setCreations(data.content);
       } else {
         toast.error(data.message);
       }

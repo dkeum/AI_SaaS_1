@@ -1,7 +1,9 @@
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import React, { useEffect, useState } from "react";
 import { dummyPublishedCreationData } from "../assets/assets";
 import { Heart } from "lucide-react";
+import axios from 'axios'
+import toast from "react-hot-toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -13,34 +15,10 @@ const Community = () => {
   const [content, setContent] = useState("");
   const { getToken } = useAuth();
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      setloading(true);
-      const prompt = `Generate a blog title for the keyword ${input} in th category ${selectedCategory}`;
-
-      const { data } = await axios.post(
-        "/api/ai/generate-blog-title",
-        { prompt },
-        {
-          headers: { Authorization: `Bearer ${await getToken()}` },
-        }
-      );
-
-      if (data.success) {
-        setContent(data.content);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (e) {
-      toast.error(e.message);
-    }
-    setloading(false);
-  };
 
   const fetchCreations = async () => {
     try {
-      const { data } = await axios.post("/api/user/get-published-creations", {
+      const { data } = await axios.get("/api/user/get-published-creations", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
 
