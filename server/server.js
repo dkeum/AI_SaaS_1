@@ -1,33 +1,33 @@
-import express from "express";
-import cors from "cors";
-import "dotenv/config";
+// import express from "express";
+// import cors from "cors";
+// import "dotenv/config";
 
-import { clerkMiddleware, requireAuth } from "@clerk/express";
-import router from "./routes/allroutes.js";
+// import { clerkMiddleware, requireAuth } from "@clerk/express";
+// import router from "./routes/allroutes.js";
 
-import {connectCloudinary} from "./config/cloudinary.js"
-import userRouter from "./routes/userRoute.js";
-
-
-// await connectCloudinary();
-const app = express();
+// import {connectCloudinary} from "./config/cloudinary.js"
+// import userRouter from "./routes/userRoute.js";
 
 
-// app.use(cors());
-// app.use(express.json());
-// app.use(clerkMiddleware());
+// // await connectCloudinary();
+// const app = express();
 
-// app.use("/api/ai", router);
-// app.use('/api/user', userRouter)
 
-app.get("/", (req, res) => {
-  res.send("Server is Live!");
-});
+// // app.use(cors());
+// // app.use(express.json());
+// // app.use(clerkMiddleware());
 
-// app.use(requireAuth());
+// // app.use("/api/ai", router);
+// // app.use('/api/user', userRouter)
 
-const PORT = process.env.PORT || 3000;
+// app.get("/", (req, res) => {
+//   res.send("Server is Live!");
+// });
 
-app.listen(PORT, () => {
-  console.log("Server is running on PORT: ", PORT);
-});
+// // app.use(requireAuth());
+
+// const PORT = process.env.PORT || 3000;
+
+// app.listen(PORT, () => {
+//   console.log("Server is running on PORT: ", PORT);
+// });
