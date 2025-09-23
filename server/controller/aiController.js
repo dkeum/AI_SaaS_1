@@ -1,9 +1,10 @@
 import OpenAI from "openai";
 import sql from "../config/db.js";
 import { clerkClient } from "@clerk/express";
-import { v2 as cloudinary } from "cloudinary";
+import { cloudinary } from "../config/cloudinary.js";
 import fs from "fs";
 import pdf from "pdf-parse/lib/pdf-parse.js";
+import axios from "axios";
 
 const openai = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -46,7 +47,7 @@ export const generateArticle = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content });
+    res.json({ success: true, content });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });
@@ -89,7 +90,7 @@ export const generateBlogTitle = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content });
+    res.json({ success: true, content });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });
@@ -129,7 +130,11 @@ export const generateImage = async (req, res) => {
       "binary"
     ).toString("base64")}`;
 
+
+
     const { secure_url } = await cloudinary.uploader.upload(base64Image);
+
+    console.log(secure_url)
 
     await sql` INSERT INTO creations (user_id, prompt, content, type, publish )
       VALUES(${userId}, ${prompt}, ${secure_url}, 'generateImage', ${
@@ -143,7 +148,7 @@ export const generateImage = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content: secure_url });
+    res.json({ success: true, content: secure_url });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });
@@ -153,7 +158,7 @@ export const generateImage = async (req, res) => {
 export const removeImageBackground = async (req, res) => {
   try {
     const { userId } = req.auth();
-    const { image } = req.file;
+    const image = req.file;
 
     const plan = req.plan;
     const free_usage = req.free_usage;
@@ -184,7 +189,7 @@ export const removeImageBackground = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content: secure_url });
+    res.json({ success: true, content: secure_url });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });
@@ -224,7 +229,7 @@ export const removeImageObject = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content: secure_url });
+    res.json({ success: true, content: secure_url });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });
@@ -273,7 +278,6 @@ export const resumeReview = async (req, res) => {
 
     const content = response.choices[0].message.content;
 
-
     await sql` INSERT INTO creations (user_id, prompt, content, type)
       VALUES(${userId}, 'Review the uploaded resume', ${content}, 'resume-review')`;
 
@@ -284,7 +288,7 @@ export const resumeReview = async (req, res) => {
         },
       });
     }
-    res.json({ sucess: true, content: secure_url });
+    res.json({ success: true, content });
   } catch (e) {
     console.log(e.message);
     res.json({ message: e.message });

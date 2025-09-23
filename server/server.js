@@ -5,12 +5,13 @@ import "dotenv/config";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
 import router from "./routes/allroutes.js";
 
-import connectCloudinary from "./config/cloudinary.js"
+import {connectCloudinary} from "./config/cloudinary.js"
 import userRouter from "./routes/userRoute.js";
 
-const app = express();
 
 await connectCloudinary();
+const app = express();
+
 
 app.use(cors());
 app.use(express.json());

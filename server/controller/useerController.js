@@ -1,11 +1,11 @@
-import sql from "../config/db";
+import sql from "../config/db.js";
 
 export const getUserCreations = async (req, res) => {
   try {
     const { userId } = req.auth();
 
     const creations =
-      await sql`SELECT * FROM creations WHERE user_id = ${userId} ORDER BY crreated_at DESC`;
+      await sql`SELECT * FROM creations WHERE user_id = ${userId} ORDER BY created_at DESC`;
     res.json({ sucess: true, creations });
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -17,13 +17,12 @@ export const getPublishedCreations = async (req, res) => {
     
 
     const creations =
-      await sql`SELECT * FROM creations WHERE publish=true ORDER BY crreated_at DESC`;
+      await sql`SELECT * FROM creations WHERE publish=true ORDER BY created_at DESC`;
     res.json({ sucess: true, creations });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
 };
-
 
 export const toggleLikeCreation = async (req, res) => {
     try {
@@ -48,7 +47,15 @@ export const toggleLikeCreation = async (req, res) => {
       if(currentLikes.includes(userIdStr)){
         updatedLikes = currentLikes.filter((user) => user !== userIdStr)
         message = 'Creation Unliked'
+      }else{
+        updatedLikes = [...currentLikes, userIdStr]
+        message = 'Creation Liked' 
       }
+
+      const formattedArray = `{${updatedLikes.join(',')}}`
+
+      await sql`UPDATE creations SET likes = ${formattedArray}::text[] WHERE id=${id}`
+
 
         res.json({ sucess: true, creations });
 
