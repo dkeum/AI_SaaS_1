@@ -1,4 +1,4 @@
-// import express from "express";
+import express from "express";
 // import cors from "cors";
 // import "dotenv/config";
 
@@ -10,7 +10,7 @@
 
 
 // // await connectCloudinary();
-// const app = express();
+const app = express();
 
 
 // // app.use(cors());
@@ -26,8 +26,8 @@
 
 // // app.use(requireAuth());
 
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-// app.listen(PORT, () => {
-//   console.log("Server is running on PORT: ", PORT);
-// });
+app.listen(PORT, () => {
+  console.log("Server is running on PORT: ", PORT);
+});
