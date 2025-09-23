@@ -5,11 +5,11 @@ import "dotenv/config";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
 // import router from "./routes/allroutes.js";
 
-// import {connectCloudinary} from "./config/cloudinary.js"
+import {connectCloudinary} from "./config/cloudinary.js"
 // import userRouter from "./routes/userRoute.js";
 
 
-// // await connectCloudinary();
+await connectCloudinary();
 const app = express();
 
 
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
   res.send("Server is Live!");
 });
 
-// // app.use(requireAuth());
+app.use(requireAuth());
 
 const PORT = process.env.PORT || 3000;
 
