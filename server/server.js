@@ -20,9 +20,9 @@ const app = express();
 // app.use("/api/ai", router);
 // app.use('/api/user', userRouter)
 
-// app.get("/", (req, res) => {
-//   res.send("Server is Live!");
-// });
+app.get("/", (req, res) => {
+  res.send("Server is Live!");
+});
 
 // app.use(requireAuth());
 
